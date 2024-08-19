@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import usePaginatedFetch from "./usePaginatedFetch";
 import Card from "./components/Card";
+import Pagination from "./components/Pagination";
 
 const url =
   "https://react-mini-projects-api.classbon.com/Programmer/programmers";
@@ -12,7 +13,7 @@ function App() {
   useEffect(() => {
     if (loading) return;
     setProgrammers(data[page - 1]);
-  }, [loading]);
+  }, [loading , page]);
 
   return (
     <div className="container pt-5">
@@ -22,15 +23,24 @@ function App() {
         </div>
       )}
       {!loading && (
-        <div className="row d-flex justify-content-center">
-          {programmers.map(({ id, ...programmer }) => {
-            return (
-              <div className="col-3" key={id}>
-                <Card {...programmer} />
-              </div>
-            );
-          })}
-        </div>
+        <>
+          <div className="row d-flex justify-content-center">
+            {programmers.map(({ id, ...programmer }) => {
+              return (
+                <div className="col-3" key={id}>
+                  <Card {...programmer} />
+                </div>
+              );
+            })}
+          </div>
+          <div className="row">
+            <Pagination
+              pages={data.length}
+              setPage={setPage}
+              activePage={page}
+            />
+          </div>
+        </>
       )}
     </div>
   );
